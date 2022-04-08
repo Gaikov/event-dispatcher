@@ -1,5 +1,6 @@
 import {BaseEvent} from "../src/BaseEvent";
 import {EventDispatcher} from "../src/EventDispatcher";
+import {EventHandlersManager} from "../src/EventHandlersManager";
 
 export class TestEvent1 extends BaseEvent {
     constructor(public a: number) {
@@ -17,6 +18,14 @@ export class TestEvent2 extends BaseEvent {
     }
 }
 
+class ContextTest {
+    public value: number = 0;
+
+    onEvent(e: TestEvent1): void {
+        this.value += e.a;
+    }
+}
+
 describe("EventDispatcher", () => {
     it("handlers", () => {
         const ed = new EventDispatcher();
@@ -29,7 +38,7 @@ describe("EventDispatcher", () => {
 
         expect(ed.getEventHandlers(TestEvent1).length).toEqual(2);
         expect(ed.getEventHandlers(TestEvent2).length).toEqual(0);
-        expect(ed.getEventHandlers(TestEvent1)[0]).toEqual(handler);
+        expect(ed.getEventHandlers(TestEvent1)[0].handler).toEqual(handler);
 
         ed.removeEventHandler(TestEvent1, handler);
         expect(ed.getEventHandlers(TestEvent1).length).toEqual(0);
@@ -46,10 +55,10 @@ describe("EventDispatcher", () => {
             value += event.b
         });
 
-        ed.dispatch(new TestEvent1(1));
+        ed.dispatchEvent(new TestEvent1(1));
         expect(value).toEqual(1);
 
-        ed.dispatch(new TestEvent2(2));
+        ed.dispatchEvent(new TestEvent2(2));
         expect(value).toEqual(3);
     });
 
@@ -73,12 +82,12 @@ describe("EventDispatcher", () => {
         ed.addEventHandler(TestEvent1, handler);
         ed.addEventHandler(TestEvent1, handler);
 
-        ed.dispatch(new TestEvent1(0));
+        ed.dispatchEvent(new TestEvent1(0));
 
         expect(value).toEqual(4);
         expect(ed.getEventHandlers(TestEvent1).length).toEqual(3);
 
-        ed.dispatch(new TestEvent1(0));
+        ed.dispatchEvent(new TestEvent1(0));
         expect(value).toEqual(6);
     });
 
@@ -96,7 +105,7 @@ describe("EventDispatcher", () => {
             ed.addEventHandler(TestEvent1, handler);
         }
 
-        ed.dispatch(new TestEvent1(0));
+        ed.dispatchEvent(new TestEvent1(0));
 
         ed.removeEventHandler(TestEvent1, handler);
 
@@ -105,4 +114,47 @@ describe("EventDispatcher", () => {
         expect(ed.getEventHandlers(TestEvent1).length).toEqual(0);
         expect(value).toEqual(10000);
     })
+
+    it("context", ()=> {
+        const ed = new EventDispatcher();
+        const obj = new ContextTest();
+
+        ed.addEventHandler(TestEvent1, obj.onEvent, obj);
+
+        ed.dispatchEvent(new TestEvent1(1));
+        ed.dispatchEvent(new TestEvent1(2));
+        ed.removeEventHandler(TestEvent1, obj.onEvent);
+
+        expect(obj.value).toEqual(3);
+
+        ed.removeEventHandler(TestEvent1, obj.onEvent, obj);
+        ed.dispatchEvent(new TestEvent1(5));
+
+        expect(obj.value).toEqual(3);
+    });
+
+    it("EventHandlersManager", ()=> {
+        const ed = new EventDispatcher();
+        const manager = new EventHandlersManager();
+        const obj = new ContextTest();
+
+        manager.addEventHandler(ed, TestEvent1, obj.onEvent, obj);
+
+        ed.dispatchEvent(new TestEvent1(1));
+        ed.dispatchEvent(new TestEvent1(2));
+        manager.removeEventHandler(ed, TestEvent1, obj.onEvent);
+        expect(obj.value).toEqual(3);
+
+        manager.removeEventHandler(ed, TestEvent1, obj.onEvent, obj);
+        ed.dispatchEvent(new TestEvent1(5));
+        expect(obj.value).toEqual(3);
+
+        manager.addEventHandler(ed, TestEvent1, obj.onEvent, obj);
+        ed.dispatchEvent(new TestEvent1(5));
+        expect(obj.value).toEqual(8);
+
+        manager.reset();
+        ed.dispatchEvent(new TestEvent1(5));
+        expect(obj.value).toEqual(8);
+    });
 });
