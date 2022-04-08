@@ -1,6 +1,6 @@
 {
   "name": "advanced-event-dispatcher",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.3",
   "description": "Object based/oriented event emitter/dispatcher for use with TypeScript or JS",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
