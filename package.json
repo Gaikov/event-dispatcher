@@ -5,7 +5,6 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "repository": "https://github.com/Gaikov/event-dispatcher.git",
-  "type": "module",
   "scripts": {
     "test": "jest",
     "clean": "run-func ./scripts/build.js clean",
