@@ -10,7 +10,7 @@
     "clean": "run-func ./scripts/build.js clean",
     "post-build": "run-func ./scripts/build.js postBuild",
     "build": "npm run clean && ts-index -s ./src && tsc && npm run post-build && ts-index -s ./src -c",
-    "publish-dev": "cd dist && npm version prerelease && npm publish && cd .."
+    "publish-dev": "npm version prerelease && npm run build && cd dist && npm publish && cd .."
   },
   "keywords": [
     "events",
