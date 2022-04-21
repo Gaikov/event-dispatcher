@@ -4,12 +4,13 @@
   "description": "Object based/oriented event emitter/dispatcher for use with TypeScript or JS",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "repository": "https://github.com/Gaikov/event-dispatcher.git",
   "scripts": {
     "test": "jest",
     "clean": "run-func ./scripts/build.js clean",
     "post-build": "run-func ./scripts/build.js postBuild",
     "build": "npm run clean && ts-index -s ./src && tsc && npm run post-build && ts-index -s ./src -c",
-    "publish-dev": "npm version prerelease && npm publish"
+    "publish-dev": "cd dist && npm version prerelease && npm publish && cd .."
   },
   "keywords": [
     "events",
