@@ -1,22 +1,17 @@
-const fs = require("fs-extra");
+import fs from "fs-extra";
 
 const DIST = "./dist";
 const SRC = "src";
 const PACKAGE = "package.json";
 
-function clean() {
+export function clean() {
     console.log("...cleaning");
     fs.removeSync("./dist");
 }
 
-function postBuild() {
+export function postBuild() {
     console.log("...copying package.json");
     fs.copySync(`./${PACKAGE}`, `${DIST}/${PACKAGE}`, {});
     console.log("...copying sources");
     fs.copySync(`./${SRC}`, `${DIST}/${SRC}`, {});
-}
-
-module.exports = {
-    clean,
-    postBuild
 }
