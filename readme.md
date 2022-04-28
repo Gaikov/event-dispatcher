@@ -3,12 +3,12 @@ Object based/oriented event dispatcher/emitter for use with TypeScript or JS. It
 
 The module uses modern browser API and if you want to launch you code in the old browsers, probably you need to add polyfills for Map class.
 
-###Install
+### Install
 ```text
 npm i advanced-event-dispatcher
 ```
 
-###Import
+### Import
 ```TypeScript
 //es5
 const {BaseEvent, EventDispatcher} = require("advanced-event-dispatcher");
@@ -16,7 +16,7 @@ const {BaseEvent, EventDispatcher} = require("advanced-event-dispatcher");
 import {BaseEvent, EventDispatcher} from "advanced-event-dispatcher";
 ```
 
-###Define an event
+### Define an event
 ```TypeScript
 //Declare an event
 class Event extends BaseEvent {
@@ -26,30 +26,30 @@ class Event extends BaseEvent {
 }
 ```
 
-###Create instance of event dispatcher
+### Create instance of event dispatcher
 ```TypeScript
 const dispatcher = new EventDispatcher();
 ```
 
-###Add event handler
+### Add event handler
 ```TypeScript
 const handler = (e:Event) => console.log(e.message);
 
 dispatcher.addEventHandler(Event, handler);
 ```
 
-###Dispatching events
+### Dispatching events
 ```TypeScript
 dispatcher.dispatchEvent(new Event("Hello from advanced-event-dispatcher!"));
 ```
 
-###Remove event handler
+### Remove event handler
 ```TypeScript
 dispatcher.removeEventHandler(Event, handler);
 dispatcher.dispatchEvent(new Event("This event will not be handled"));
 ```
 
-###EventBus example
+### EventBus example
 ```TypeScript
 class EventBus extends EventDispatcher {
     static instance = new EventBus();
@@ -69,6 +69,6 @@ const c = new Observer();
 EventBus.instance.dispatchEvent(new Event("Hello from EventBus!"));
 ```
 
-###Additional examples
+### Additional examples
 See full examples code, including JavaScript, [here](https://github.com/Gaikov/advanced-event-dispatcher-exmples)
 
