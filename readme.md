@@ -1,7 +1,10 @@
 ![github CI](https://github.com/Gaikov/event-dispatcher/actions/workflows/node.js.yml/badge.svg)
 
 # advanced-event-dispatcher
-Object based/oriented event dispatcher/emitter for use with TypeScript or JS. It uses class type of event as an event target to add event listeners. 
+Object based/oriented event dispatcher/emitter for use with TypeScript or JS. 
+
+It uses class type of event as an event target to add event handlers and an instance of the event will be passed to an event handler when it will be dispatched. 
+So an event and its data contained in the same object instance.  
 
 The module uses modern browser API and if you want to launch you code in the old browsers, probably you need to add polyfills for Map class.
 
