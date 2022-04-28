@@ -52,7 +52,7 @@ dispatcher.dispatchEvent(new Event("This event will not be handled"));
 ### EventBus example
 ```TypeScript
 class EventBus extends EventDispatcher {
-    static instance = new EventBus();
+    static readonly instance = new EventBus();
 }
 
 class Observer {
